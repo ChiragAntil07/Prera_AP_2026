@@ -4,9 +4,6 @@ import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
-
-dotenv.config();
-
 import prisma from './config/db.js';
 import eventRoutes from './routes/event.routes.js';
 import applicationRoutes from './routes/application.routes.js';
@@ -17,6 +14,21 @@ import {
   notFoundHandler,
   errorHandler,
 } from './middleware/errorHandler.middleware.js';
+
+dotenv.config();
+
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL must be configured before starting the API.');
+}
+
+const jwtSecret = process.env.JWT_SECRET;
+if (
+  !jwtSecret ||
+  jwtSecret.length < 32 ||
+  ['replace-with-a-long-random-secret', 'generate-a-unique-secret-at-least-32-characters'].includes(jwtSecret)
+) {
+  throw new Error('Set a unique JWT_SECRET of at least 32 characters in backend/.env.');
+}
 
 const app = express();
 const PORT = process.env.PORT || 5001;

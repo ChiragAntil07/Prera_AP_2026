@@ -19,8 +19,7 @@ export const authenticateAdmin = async (req, res, next) => {
       });
     }
 
-    const secret = process.env.JWT_SECRET || 'prera_jwt_secret_super_secure_key_2026_AP_project';
-    const decoded = jwt.verify(token, secret);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const admin = await prisma.admin.findUnique({
       where: { id: decoded.id },

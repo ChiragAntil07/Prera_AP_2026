@@ -1,6 +1,9 @@
 
 import express from 'express';
-import { createFeedback } from '../controllers/feedback.controller.js';
+import {
+  createFeedback,
+  getApprovedFeedback,
+} from '../controllers/feedback.controller.js';
 import {
   feedbackSubmissionValidationRules,
   validate,
@@ -9,6 +12,7 @@ import {
 const router = express.Router();
 
 // Public: Submit feedback
+router.get('/approved', getApprovedFeedback);
 router.post('/', feedbackSubmissionValidationRules, validate, createFeedback);
 
 export default router;

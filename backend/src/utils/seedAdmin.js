@@ -6,9 +6,18 @@ dotenv.config();
 
 const seedAdmin = async () => {
   try {
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@prera.com';
-    const adminPassword = process.env.ADMIN_PASSWORD || 'admin_prera_secure_2026';
+    const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+    const adminPassword = process.env.ADMIN_PASSWORD;
     const adminName = process.env.ADMIN_NAME || 'PRERA Administrator';
+
+    if (
+      !adminEmail ||
+      adminEmail === 'admin@example.com' ||
+      !adminPassword ||
+      adminPassword === 'change-this-password'
+    ) {
+      throw new Error('Set a real ADMIN_EMAIL and ADMIN_PASSWORD in backend/.env before seeding.');
+    }
 
     console.log(`Checking for admin account: ${adminEmail}...`);
 

@@ -80,10 +80,6 @@ export const login = async (req, res, next) => {
     }
 
     // Generate JWT
-    const secret =
-      process.env.JWT_SECRET ||
-      'prera_jwt_secret_super_secure_key_2026_AP_project';
-
     const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
 
     const token = jwt.sign(
@@ -92,7 +88,7 @@ export const login = async (req, res, next) => {
         email: admin.email,
         name: admin.name,
       },
-      secret,
+      process.env.JWT_SECRET,
       { expiresIn }
     );
 

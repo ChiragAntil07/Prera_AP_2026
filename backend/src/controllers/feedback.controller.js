@@ -31,6 +31,30 @@ export const createFeedback = async (req, res, next) => {
   }
 };
 
+// Public: Get approved feedback for the feedback page
+export const getApprovedFeedback = async (req, res, next) => {
+  try {
+    const feedback = await prisma.feedback.findMany({
+      where: { status: 'Approved' },
+      select: {
+        id: true,
+        name: true,
+        rating: true,
+        message: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: feedback,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Admin: Get all feedback with pagination and search
 export const getFeedback = async (req, res, next) => {
   try {

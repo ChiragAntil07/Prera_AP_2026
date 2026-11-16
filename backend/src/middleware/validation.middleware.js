@@ -265,6 +265,6 @@ export const feedbackStatusValidationRules = [
     .trim()
     .notEmpty()
     .withMessage('Status is required')
-    .isIn(['Pending', 'Reviewed'])
-    .withMessage('Status must be Pending or Reviewed'),
+    .isIn(['Pending', 'Reviewed', 'Approved'])
+    .withMessage('Status must be Pending, Reviewed, or Approved'),
 ];
