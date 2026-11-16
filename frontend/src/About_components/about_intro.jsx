@@ -8,7 +8,7 @@ export default function Intro() {
         <h1 className='about-heading-gold'>Brands & Organizers</h1>
 
         <p id='intro-content' >
-            Prera is more than a platform—we're your strategic partner in creating unforgettable
+            Prera is more than a platform — we're your strategic partner in creating unforgettable
             events. We connect ambitious organizers with brands, turning visions
             into reality through meaningful partnerships.</p>
 

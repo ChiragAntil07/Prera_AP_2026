@@ -10,8 +10,8 @@ export default function Impact(){
         <div className='impact-numbers-grid'>
             <Number number={'25+'} message={"Events Organized"}/>
             <Number number={'20+'} message={"Brands Partnered"}/>
-            <Number number={'500+'} message={"Audience reached"}/>
-            <Number number={'95%'} message={"Client Satisfaction"}/>
+            <Number number={'100K+'} message={"Audience reached"}/>
+            <Number number={'99%'} message={"Client Satisfaction"}/>
         </div>
     </div>)
 }

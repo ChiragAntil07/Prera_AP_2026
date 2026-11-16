@@ -5,6 +5,7 @@ import { FaLinkedin, FaInstagram } from "react-icons/fa";
 // import Aryan from "../assets/Aryan.png";
 
 import Anindya from "../assets/Anindya.png";
+import Prera_Team_Img from "../assets/Prera_Team_Img.jpeg";
 
 function AboutTeam() {
   const team = [
@@ -13,20 +14,14 @@ function AboutTeam() {
       role: "Founder & CEO",
       linkedin: "https://www.linkedin.com/in/chiragantil/",
       instagram: "https://www.instagram.com/nst.techie_chirag/",
+      image: Prera_Team_Img
     },
     {
-      name: "Aryan",
+      name: "Aryan Sangwan",
       role: "Co-Founder",
       linkedin: "https://www.linkedin.com/in/aryan-sangwan-5a54b537a?utm_source=share_via&utm_content=profile&utm_medium=member_android",
       instagram: "https://www.instagram.com/aryansangwan16?igsh=MXhkeGsxZDNmd2dpbw==",
-      //   image:Aryan
-    },
-    {
-      name: "Anindya Sarkar",
-      role: "Partnership Head",
-      linkedin: "https://www.linkedin.com/in/anindya-sarkar2007/",
-      instagram: "https://www.instagram.com/ani03610/",
-      image: Anindya
+      image: Prera_Team_Img
     },
 
   ];
