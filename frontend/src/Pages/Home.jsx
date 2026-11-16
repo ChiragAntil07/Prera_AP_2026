@@ -1,12 +1,14 @@
-import '../CSS/Home.css';
-import Home_intro from '../Home_components/Home_intro.jsx';
-import Impact from '../About_components/impact.jsx';
+import '../styles/pages/Home.css';
+import Home_intro from '../components/home/HomeIntro.jsx';
+import PartnerMarquee from '../components/home/PartnerMarquee.jsx';
+import Impact from '../components/about/Impact.jsx';
 
 export default function Home(){
-    return(<div>
+    return(<main className="home-page">
         <Home_intro />
+        <PartnerMarquee />
         <div className='home-impact-wrapper'>
             <Impact/>
         </div>
-    </div>)
+    </main>)
 }

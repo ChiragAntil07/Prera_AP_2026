@@ -1,6 +1,8 @@
 
-import { useState } from 'react';
-import '../CSS/Feedback.css';
+import { useEffect, useState } from 'react';
+import '../styles/pages/Feedback.css';
+
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 export default function Feedback() {
   const [form, setForm] = useState({
@@ -12,6 +14,30 @@ export default function Feedback() {
 
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState('');
+  const [approvedFeedback, setApprovedFeedback] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [reviewsError, setReviewsError] = useState('');
+
+  useEffect(() => {
+    const loadApprovedFeedback = async () => {
+      try {
+        const res = await fetch(`${API}/feedback/approved`);
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.message || 'Could not load approved feedback.');
+        }
+
+        setApprovedFeedback(data.data || []);
+      } catch (error) {
+        setReviewsError(error.message || 'Could not load approved feedback.');
+      } finally {
+        setReviewsLoading(false);
+      }
+    };
+
+    loadApprovedFeedback();
+  }, []);
 
   const handleChange = (e) => {
     setForm({
@@ -132,6 +158,42 @@ export default function Feedback() {
           </button>
 
         </form>
+
+        <section className="feedback-reviews" aria-labelledby="feedback-reviews-heading">
+          <div className="feedback-reviews-heading">
+            <p>COMMUNITY VOICES</p>
+            <h2 id="feedback-reviews-heading"><span>FEEDBACKS</span></h2>
+          </div>
+
+          {reviewsLoading ? (
+            <p className="feedback-reviews-state">Loading feedback...</p>
+          ) : reviewsError ? (
+            <p className="feedback-reviews-state" role="alert">{reviewsError}</p>
+          ) : approvedFeedback.length === 0 ? (
+            <p className="feedback-reviews-state">No approved feedback yet.</p>
+          ) : (
+            <div className="feedback-review-grid">
+              {approvedFeedback.map((item) => (
+                <article className="feedback-review-card" key={item.id}>
+                  <div
+                    className="feedback-review-rating"
+                    aria-label={`${item.rating} out of 5 stars`}
+                  >
+                    {'★'.repeat(item.rating)}
+                    <span>{'☆'.repeat(5 - item.rating)}</span>
+                  </div>
+                  <p className="feedback-review-message">{item.message}</p>
+                  <div className="feedback-review-author">
+                    <h3>{item.name}</h3>
+                    <time dateTime={item.createdAt}>
+                      {new Date(item.createdAt).toLocaleDateString()}
+                    </time>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
       </div>
     </section>
   );

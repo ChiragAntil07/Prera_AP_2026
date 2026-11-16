@@ -1,18 +1,18 @@
 
-import '../CSS/Events.css';
-import Event_intro from '../Events_components/event_intro';
-import Event_card from '../Events_components/event_card';
+import '../styles/pages/Events.css';
+import Event_intro from '../components/events/EventIntro.jsx';
+import Event_card from '../components/events/EventCard.jsx';
 
-import KCC from '../assets/KCC.png';
-import Sarvagya from '../assets/Sarvagya.png';
-import BoxCricketTournament from '../assets/Box-Cricket-Tournament.png';
-import Drishti from '../assets/Drishti.png';
-import Tekron from '../assets/Tekron.png';
-import Culmyca from '../assets/Culmyca.png';
-import Aayam from '../assets/Aayam.png';
-import DesignX from '../assets/DesignX.png';
-import Moksha from '../assets/Moksha.png';
-import Damru from '../assets/Damru.png';
+import KCC from '../assets/events/KCC.png';
+import Sarvagya from '../assets/events/Sarvagya.png';
+import BoxCricketTournament from '../assets/events/Box-Cricket-Tournament.png';
+import Drishti from '../assets/events/Drishti.png';
+import Tekron from '../assets/events/Tekron.png';
+import Culmyca from '../assets/events/Culmyca.png';
+import Aayam from '../assets/events/Aayam.png';
+import DesignX from '../assets/events/DesignX.png';
+import Moksha from '../assets/events/Moksha.png';
+import Damru from '../assets/events/Damru.png';
 
 import { useState, useEffect } from 'react';
 
@@ -218,30 +218,19 @@ export default function Events() {
         <>
             <Event_intro />
 
-            <ul
-                style={{
-                    listStyleType: 'none',
-                    color: 'white',
-                    display: 'flex',
-                    gap: '20px',
-                    justifyContent: 'space-evenly',
-                    margin: '30px 0px 70px 0px',
-                    fontSize: '24px'
-                }}
-            >
-                <li className='filter' onClick={() => setType('All')}>
-                    All
-                </li>
-                <li className='filter' onClick={() => setType('Cultural')}>
-                    Cultural
-                </li>
-                <li className='filter' onClick={() => setType('Tech')}>
-                    Tech
-                </li>
-                <li className='filter' onClick={() => setType('Sports')}>
-                    Esports
-                </li>
-            </ul>
+            <div className="event-filters" role="group" aria-label="Filter events by category">
+                {['All', 'Cultural', 'Tech', 'Sports'].map(category => (
+                    <button
+                        key={category}
+                        type="button"
+                        className={`filter ${Type === category ? 'active' : ''}`}
+                        aria-pressed={Type === category}
+                        onClick={() => setType(category)}
+                    >
+                        {category}
+                    </button>
+                ))}
+            </div>
 
             <div id='cards-div'>
                 {filteredEvents.map((event, index) => (

@@ -1,8 +1,8 @@
 
 import { useEffect, useState } from 'react';
-import '../CSS/Admin.css';
+import '../styles/pages/Admin.css';
 
-const API = 'http://localhost:5001/api';
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 export default function Admin() {
   const [token, setToken] = useState(
@@ -112,12 +112,18 @@ export default function Admin() {
       }
 
       setFeedback((previous) =>
-        previous.map((item) =>
-          item.id === id ? { ...item, status: newStatus } : item
-        )
+        status !== 'All' && status !== newStatus
+          ? previous.filter((item) => item.id !== id)
+          : previous.map((item) =>
+              item.id === id ? { ...item, status: newStatus } : item
+            )
       );
 
-      setMessage('Feedback status updated successfully.');
+      setMessage(
+        newStatus === 'Approved'
+          ? 'Feedback approved and is now visible on the public feedback page.'
+          : 'Feedback status updated successfully.'
+      );
     } catch (error) {
       setMessage(error.message);
     }
@@ -255,6 +261,7 @@ export default function Admin() {
             <option value="All">All Feedback</option>
             <option value="Pending">Pending</option>
             <option value="Reviewed">Reviewed</option>
+            <option value="Approved">Approved</option>
           </select>
 
           <button onClick={loadFeedback}>REFRESH</button>
@@ -276,9 +283,7 @@ export default function Admin() {
                     <p>{item.email}</p>
                   </div>
 
-                  <span className={`feedback-status ${
-                    item.status === 'Reviewed' ? 'reviewed' : 'pending'
-                  }`}>
+                  <span className={`feedback-status ${item.status.toLowerCase()}`}>
                     {item.status}
                   </span>
                 </div>
@@ -305,6 +310,7 @@ export default function Admin() {
                   >
                     <option value="Pending">Pending</option>
                     <option value="Reviewed">Reviewed</option>
+                    <option value="Approved">Approved (Public)</option>
                   </select>
 
                   <button
