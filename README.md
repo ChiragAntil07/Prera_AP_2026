@@ -46,7 +46,12 @@ Generate Prisma Client and sync the schema:
 ```bash
 npx prisma generate
 npx prisma db push
+npm run seed
 ```
+
+`npm run seed` creates or resets the admin account from `ADMIN_EMAIL` and
+`ADMIN_PASSWORD` in `backend/.env`. Use a unique `JWT_SECRET` of at least 32
+characters; do not use the example placeholder values.
 
 Start the backend:
 
@@ -121,20 +126,17 @@ PRERA/
 ├── frontend/
 │   ├── public/
 │   └── src/
-│       ├── About_components/
-│       ├── Contact_components/
-│       │   ├── Connect-page.jsx
-│       │   └── Connect-page.css
-│       ├── Events_components/
-│       ├── Home_components/
-│       ├── Pages/
-│       ├── Partners_compoonents/
-│       ├── App.jsx
+│       ├── app/                 # Application routes and theme state
+│       ├── assets/              # Brand, event, partner, and team assets
+│       ├── components/          # Shared and feature-level UI components
+│       ├── features/            # Contact and partner feature modules
+│       ├── Pages/               # Route-level page components
+│       ├── styles/              # Global and page styles
 │       └── main.jsx
 ├── backend/
-│   ├── prisma/schema.prisma
-│   └── src/
-└── dbms/
+│   ├── prisma/                  # Prisma schema and migrations
+│   └── src/                     # Config, controllers, middleware, routes, utils
+└── dbms/                        # Database design notes, schema, and queries
 ```
 
 PRERA — Creating Connections. Enabling Collaborations. Building Experiences.
