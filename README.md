@@ -10,6 +10,8 @@ PRERA connects event organizers with brands and sponsors, and provides a way for
 - Both forms submit to the Express API and store submissions in PostgreSQL through Prisma.
 - Server-side validation, rate limiting and generated reference IDs.
 - Protected admin API endpoints for reviewing and managing submissions.
+- Event organizers can submit event details with a poster image.
+- Admins can review pending event submissions and approve or reject them before public listing.
 
 ## Tech stack
 
@@ -94,6 +96,14 @@ Submissions are stored in the PostgreSQL tables:
 - `work_applications`
 
 You can inspect them in pgAdmin under `prera_db → Schemas → public → Tables`, then right-click a table and choose **View/Edit Data → All Rows**.
+
+## 4. Test Event Approval
+
+1. Open the Admin page and log in.
+2. Go to the Event Submissions section.
+3. Review pending event submissions.
+4. Approve an event to make it visible on the public Events page.
+5. Reject submissions that should not be published.
 
 ## API endpoints
 
