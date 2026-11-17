@@ -16,20 +16,36 @@ import Damru from '../assets/events/Damru.png';
 
 import { useState, useEffect } from 'react';
 
+const API_BASE_URL = 'http://localhost:5001';
+
 export default function Events() {
     const [Type, setType] = useState('All');
     const [submittedEvents, setSubmittedEvents] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5001/api/events')
-            .then(response => {
+        const fetchEvents = async () => {
+            try {
+                const response = await fetch(
+                    `${API_BASE_URL}/api/events/public`
+                );
+
                 if (!response.ok) {
                     throw new Error('Could not fetch events');
                 }
-                return response.json();
-            })
-            .then(data => setSubmittedEvents(data))
-            .catch(error => console.error('Events loading error:', error));
+
+                const result = await response.json();
+
+                if (result.success && Array.isArray(result.data)) {
+                    setSubmittedEvents(result.data);
+                } else {
+                    setSubmittedEvents([]);
+                }
+            } catch (error) {
+                console.error('Events loading error:', error);
+            }
+        };
+
+        fetchEvents();
     }, []);
 
     // Existing PRERA events
@@ -180,46 +196,49 @@ export default function Events() {
         }
     ];
 
-    // Convert backend events into the format used by Event_card
-    const dynamicEvents = submittedEvents.map(event => ({
-        id: event._id,
+    // Convert backend events into Event_card format
+    const dynamicEvents = submittedEvents.map((event) => ({
+        id: event.id,
         name: event.eventName,
         organization: event.organizerName,
-        Type: event.category,
+        Type: event.category === 'Technical' ? 'Tech' : event.category,
         Description: event.description,
-        Date: event.date
-            ? new Date(event.date).toLocaleDateString('en-IN', {
+        Date: event.eventDate
+            ? new Date(event.eventDate).toLocaleDateString('en-IN', {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
             })
             : '',
-        Venue: [event.venue, event.city].filter(Boolean).join(', '),
-        Audience: event.audience
-            ? `${event.audience} attendees`
+        Audience: event.expectedAudience
+            ? `${event.expectedAudience} attendees`
             : '',
         url: event.posterUrl
-            ? `http://localhost:5001${event.posterUrl}`
+            ? `${API_BASE_URL}${event.posterUrl}`
             : '',
-        link: event.registrationLink || ''
+        link: ''
     }));
 
-    // Combine existing and newly approved events
+    // Combine existing and newly submitted events
     const allEvents = [...Events_data, ...dynamicEvents];
 
-    // Apply category filter and display event cards
+    // Apply category filter
     const filteredEvents = Type === 'All'
         ? allEvents
         : allEvents.filter(
-            event => event.Type?.toLowerCase() === Type.toLowerCase()
+            (event) => event.Type?.toLowerCase() === Type.toLowerCase()
         );
 
     return (
         <>
             <Event_intro />
 
-            <div className="event-filters" role="group" aria-label="Filter events by category">
-                {['All', 'Cultural', 'Tech', 'Sports'].map(category => (
+            <div
+                className="event-filters"
+                role="group"
+                aria-label="Filter events by category"
+            >
+                {['All', 'Cultural', 'Tech', 'Sports'].map((category) => (
                     <button
                         key={category}
                         type="button"
@@ -232,7 +251,7 @@ export default function Events() {
                 ))}
             </div>
 
-            <div id='cards-div'>
+            <div id="cards-div">
                 {filteredEvents.map((event, index) => (
                     <Event_card
                         key={event.id || event.name + index}
