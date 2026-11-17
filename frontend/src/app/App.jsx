@@ -42,7 +42,7 @@ function App() {
         <Route path='/feedback' element={<Feedback />} />
         <Route path='/admin' element={<Admin />} />
       </Routes>
-      <Footer/>
+      <Footer theme={theme}/>
     </div>
   );
 }
