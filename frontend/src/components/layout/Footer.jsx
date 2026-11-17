@@ -13,7 +13,7 @@ export default function Footer({ theme }){
                     <Link to="/" className="footer-logo">
                         <img src={theme === 'light' ? preraBlackLogo : preraLogo} alt="PRERA — From Vision to Venue" />
                     </Link>
-                    <p>Students building together — innovation, community &amp; real impact.</p>
+                    <p>Students building together - innovation, community &amp; real impact.</p>
                 </div>
 
                 <div className="footer-column">
@@ -34,7 +34,7 @@ export default function Footer({ theme }){
                 </div>
             </div>
             <div className="footer-bottom">
-                <span>© {new Date().getFullYear()} PRERA. Built for better connections.</span>
+                <span>© {new Date().getFullYear()} Prera. Built for better connections.</span>
                 <Link to="/connect">Work with us <span aria-hidden="true">↗</span></Link>
             </div>
         </footer>
