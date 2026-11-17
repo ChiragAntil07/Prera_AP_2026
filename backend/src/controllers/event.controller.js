@@ -1,60 +1,53 @@
+
 import prisma from '../config/db.js';
 import { generateReferenceId } from '../utils/referenceGenerator.js';
 
 /**
- * Public: Submit a new Event Organizer / Collaboration Proposal
+ * Public: Submit a new event with poster image
  */
 export const createEventSubmission = async (req, res, next) => {
   try {
     const {
       organizerName,
-      contactPerson,
-      email,
-      phone,
-      organization,
       eventName,
       category,
       description,
       eventDate,
-      location,
       expectedAudience,
-      requirements,
-      socialLinks,
     } = req.body;
 
+    // Poster image is required
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please upload an event poster.',
+      });
+    }
+
     const referenceId = generateReferenceId('EVT');
+
+    const posterUrl = `/uploads/events/${req.file.filename}`;
 
     const newEvent = await prisma.eventSubmission.create({
       data: {
         referenceId,
         organizerName,
-        contactPerson,
-        email,
-        phone,
-        organization,
+        // Organization is required by the current Prisma schema.
+        organization: organizerName,
         eventName,
         category,
         description,
         eventDate: new Date(eventDate),
-        location,
         expectedAudience: String(expectedAudience),
-        requirements,
-        socialLinks: socialLinks || null,
+        posterUrl,
         status: 'Pending',
       },
     });
 
     return res.status(201).json({
       success: true,
-      message: 'Event proposal submitted successfully. Our team will review and get in touch with you soon!',
-      data: {
-        id: newEvent.id,
-        referenceId: newEvent.referenceId,
-        eventName: newEvent.eventName,
-        organizerName: newEvent.organizerName,
-        status: newEvent.status,
-        createdAt: newEvent.createdAt,
-      },
+      message: 'Event submitted and published successfully!',
+      data: newEvent,
     });
   } catch (error) {
     next(error);
@@ -62,7 +55,40 @@ export const createEventSubmission = async (req, res, next) => {
 };
 
 /**
- * Admin: List all Event Submissions with pagination, search, and filtering
+ * Public: Get approved events for the website
+ */
+export const getPublicEvents = async (req, res, next) => {
+  try {
+    const events = await prisma.eventSubmission.findMany({
+      where: {
+        status: 'Approved',
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      select: {
+        id: true,
+        eventName: true,
+        organizerName: true,
+        category: true,
+        description: true,
+        eventDate: true,
+        expectedAudience: true,
+        posterUrl: true,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: events,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Admin: List all event submissions with pagination, search, and filtering
  */
 export const getEvents = async (req, res, next) => {
   try {
@@ -70,7 +96,15 @@ export const getEvents = async (req, res, next) => {
     const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 10));
     const skip = (page - 1) * limit;
 
-    const { search, status, category, startDate, endDate, sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
+    const {
+      search,
+      status,
+      category,
+      startDate,
+      endDate,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+    } = req.query;
 
     const where = {};
 
@@ -84,9 +118,11 @@ export const getEvents = async (req, res, next) => {
 
     if (startDate || endDate) {
       where.createdAt = {};
+
       if (startDate) {
         where.createdAt.gte = new Date(startDate);
       }
+
       if (endDate) {
         const end = new Date(endDate);
         end.setHours(23, 59, 59, 999);
@@ -96,6 +132,7 @@ export const getEvents = async (req, res, next) => {
 
     if (search && search.trim() !== '') {
       const q = search.trim();
+
       where.OR = [
         { referenceId: { contains: q, mode: 'insensitive' } },
         { eventName: { contains: q, mode: 'insensitive' } },
@@ -107,8 +144,18 @@ export const getEvents = async (req, res, next) => {
       ];
     }
 
-    const validSortFields = ['createdAt', 'eventDate', 'eventName', 'organizerName', 'status'];
-    const orderField = validSortFields.includes(sortBy) ? sortBy : 'createdAt';
+    const validSortFields = [
+      'createdAt',
+      'eventDate',
+      'eventName',
+      'organizerName',
+      'status',
+    ];
+
+    const orderField = validSortFields.includes(sortBy)
+      ? sortBy
+      : 'createdAt';
+
     const direction = sortOrder.toLowerCase() === 'asc' ? 'asc' : 'desc';
 
     const [total, events] = await Promise.all([
@@ -166,7 +213,7 @@ export const getEventById = async (req, res, next) => {
 };
 
 /**
- * Admin: Update Event application status
+ * Admin: Update event application status
  */
 export const updateEventStatus = async (req, res, next) => {
   try {
