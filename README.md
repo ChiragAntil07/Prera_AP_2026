@@ -12,6 +12,7 @@ PRERA connects event organizers with brands and sponsors, and provides a way for
 - Protected admin API endpoints for reviewing and managing submissions.
 - Event organizers can submit event details with a poster image.
 - Admins can review pending event submissions and approve or reject them before public listing.
+- Event posters support JPG, PNG and WEBP images up to 5 MB.
 
 ## Tech stack
 
