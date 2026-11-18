@@ -5,10 +5,15 @@ import '../styles/pages/EventSubmission.css';
 const initialFormData = {
   eventName: '',
   organizerName: '',
+  contactPerson: '',
+  email: '',
+  phone: '',
   category: '',
   description: '',
   eventDate: '',
+  location: '',
   expectedAudience: '',
+  requirements: '',
 };
 
 export default function EventSubmission() {
@@ -66,10 +71,15 @@ export default function EventSubmission() {
 
     payload.append('eventName', formData.eventName.trim());
     payload.append('organizerName', formData.organizerName.trim());
+    payload.append('contactPerson', formData.contactPerson.trim());
+    payload.append('email', formData.email.trim());
+    payload.append('phone', formData.phone.trim());
     payload.append('category', formData.category);
     payload.append('description', formData.description.trim());
     payload.append('eventDate', formData.eventDate);
+    payload.append('location', formData.location.trim());
     payload.append('expectedAudience', formData.expectedAudience);
+    payload.append('requirements', formData.requirements.trim());
     payload.append('poster', poster);
 
     try {
@@ -160,6 +170,47 @@ export default function EventSubmission() {
           </div>
 
           <div className="submission-field">
+            <label htmlFor="contactPerson">Contact Person *</label>
+            <input
+              id="contactPerson"
+              type="text"
+              name="contactPerson"
+              value={formData.contactPerson}
+              onChange={handleChange}
+              placeholder="Enter contact person"
+              minLength="2"
+              maxLength="100"
+              required
+            />
+          </div>
+
+          <div className="submission-field">
+            <label htmlFor="email">Email Address *</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter contact email"
+              required
+            />
+          </div>
+
+          <div className="submission-field">
+            <label htmlFor="phone">Phone Number *</label>
+            <input
+              id="phone"
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Enter contact phone"
+              required
+            />
+          </div>
+
+          <div className="submission-field">
             <label htmlFor="category">Event Category *</label>
             <select
               id="category"
@@ -186,6 +237,21 @@ export default function EventSubmission() {
               name="eventDate"
               value={formData.eventDate}
               onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="submission-field">
+            <label htmlFor="location">Event Location *</label>
+            <input
+              id="location"
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              placeholder="Enter event location"
+              minLength="2"
+              maxLength="200"
               required
             />
           </div>
@@ -228,6 +294,21 @@ export default function EventSubmission() {
             placeholder="Tell us about your event..."
             rows="5"
             minLength="2"
+            maxLength="3000"
+            required
+          />
+        </div>
+
+        <div className="submission-field full-width">
+          <label htmlFor="requirements">Requirements *</label>
+          <textarea
+            id="requirements"
+            name="requirements"
+            value={formData.requirements}
+            onChange={handleChange}
+            placeholder="Describe the support or collaboration you need..."
+            rows="4"
+            minLength="5"
             maxLength="3000"
             required
           />
