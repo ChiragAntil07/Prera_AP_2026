@@ -20,7 +20,7 @@ import uploadEventPoster from '../middleware/upload.middleware.js';
 
 const router = express.Router();
 
-// Public: Submit an event with its poster image
+// Public: Submit an event; posters are optional for collaboration proposals.
 router.post(
   '/',
   uploadEventPoster.single('poster'),

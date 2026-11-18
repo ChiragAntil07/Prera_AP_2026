@@ -9,36 +9,42 @@ export const createEventSubmission = async (req, res, next) => {
   try {
     const {
       organizerName,
+      contactPerson,
+      email,
+      phone,
+      organization,
       eventName,
       category,
       description,
       eventDate,
+      location,
       expectedAudience,
+      requirements,
+      socialLinks,
     } = req.body;
-
-    // Poster image is required
-    if (!req.file) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please upload an event poster.',
-      });
-    }
 
     const referenceId = generateReferenceId('EVT');
 
-    const posterUrl = `/uploads/events/${req.file.filename}`;
+    const posterUrl = req.file
+      ? `/uploads/events/${req.file.filename}`
+      : null;
 
     const newEvent = await prisma.eventSubmission.create({
       data: {
         referenceId,
         organizerName,
-        // Organization is required by the current Prisma schema.
-        organization: organizerName,
+        contactPerson,
+        email,
+        phone,
+        organization: organization || organizerName,
         eventName,
         category,
         description,
         eventDate: new Date(eventDate),
+        location,
         expectedAudience: String(expectedAudience),
+        requirements,
+        socialLinks: socialLinks || null,
         posterUrl,
         status: 'Pending',
       },

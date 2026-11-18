@@ -35,6 +35,34 @@ export const eventSubmissionValidationRules = [
     .isLength({ min: 2, max: 100 })
     .withMessage('Organizer name must be between 2 and 100 characters'),
 
+  body('contactPerson')
+    .trim()
+    .notEmpty()
+    .withMessage('Contact person is required')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('Contact person must be between 2 and 100 characters'),
+
+  body('email')
+    .trim()
+    .notEmpty()
+    .withMessage('Email address is required')
+    .isEmail()
+    .withMessage('Please provide a valid email address')
+    .normalizeEmail(),
+
+  body('phone')
+    .trim()
+    .notEmpty()
+    .withMessage('Phone number is required')
+    .matches(/^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]{6,15}$/)
+    .withMessage('Please provide a valid phone number (at least 7 digits)'),
+
+  body('organization')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ min: 2, max: 200 })
+    .withMessage('Organization must be between 2 and 200 characters'),
+
   body('category')
     .trim()
     .notEmpty()
@@ -57,10 +85,30 @@ export const eventSubmissionValidationRules = [
     .isISO8601()
     .withMessage('Please provide a valid event date'),
 
+  body('location')
+    .trim()
+    .notEmpty()
+    .withMessage('Event location is required')
+    .isLength({ min: 2, max: 200 })
+    .withMessage('Event location must be between 2 and 200 characters'),
+
   body('expectedAudience')
     .trim()
     .notEmpty()
     .withMessage('Expected audience is required'),
+
+  body('requirements')
+    .trim()
+    .notEmpty()
+    .withMessage('Requirements are required')
+    .isLength({ min: 5, max: 3000 })
+    .withMessage('Requirements must be between 5 and 3000 characters'),
+
+  body('socialLinks')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ max: 1000 })
+    .withMessage('Social links must be 1000 characters or fewer'),
 ];
 
 // Work application validation
