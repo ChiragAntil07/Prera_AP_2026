@@ -13,6 +13,8 @@ PRERA connects event organizers with brands and sponsors, and provides a way for
 - Event organizers can submit event details with a poster image.
 - Admins can review pending event submissions and approve or reject them before public listing.
 - Event posters support JPG, PNG and WEBP images up to 5 MB.
+- Visitors can submit feedback, and admins can review, approve, reject, or delete it.
+- Approved feedback is available to the public Feedback page.
 
 ## Tech stack
 
@@ -40,6 +42,7 @@ DATABASE_URL="postgresql://YOUR_USERNAME:YOUR_PASSWORD@localhost:5432/prera_db?s
 PORT=5001
 NODE_ENV=development
 FRONTEND_URL=http://localhost:5173
+JWT_EXPIRES_IN=7d
 ```
 
 Do not commit `.env`; it contains credentials.
@@ -95,6 +98,7 @@ Submissions are stored in the PostgreSQL tables:
 
 - `event_submissions`
 - `work_applications`
+- `feedback`
 
 You can inspect them in pgAdmin under `prera_db → Schemas → public → Tables`, then right-click a table and choose **View/Edit Data → All Rows**.
 
@@ -106,6 +110,13 @@ You can inspect them in pgAdmin under `prera_db → Schemas → public → Table
 4. Approve an event to make it visible on the public Events page.
 5. Reject submissions that should not be published.
 
+## 5. Test Feedback
+
+1. Open the Feedback page.
+2. Submit a name, email, rating, and message.
+3. Log in to the Admin page and review the new feedback under Feedback.
+4. Approve feedback to make it visible on the public Feedback page.
+
 ## API endpoints
 
 | Method | Endpoint | Purpose |
@@ -113,9 +124,12 @@ You can inspect them in pgAdmin under `prera_db → Schemas → public → Table
 | GET | `/api/health` | Backend and database health |
 | POST | `/api/events` | Public event proposal submission |
 | POST | `/api/applications` | Public work application submission |
+| POST | `/api/feedback` | Public feedback submission |
+| GET | `/api/feedback/approved` | Approved public feedback |
 | GET/PATCH/DELETE | `/api/events/*` | Admin-protected event management |
 | GET/PATCH/DELETE | `/api/applications/*` | Admin-protected application management |
-| `/api/admin/*` | Admin authentication and management |
+| GET/PATCH/DELETE | `/api/admin/feedback/*` | Admin-protected feedback management |
+| GET/POST | `/api/admin/*` | Admin authentication and profile/dashboard management |
 
 ## GitHub workflow
 
