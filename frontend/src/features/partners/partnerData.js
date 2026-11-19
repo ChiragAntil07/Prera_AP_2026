@@ -10,6 +10,11 @@ import abhibus from '../../assets/partners/abhibus.png';
 import unstop from '../../assets/partners/unstop.png';
 import dominos from '../../assets/partners/dominos.png';
 import unibazar from '../../assets/partners/unibazar.png';
+import lahoriZeera from '../../assets/partners/lahorizeera.png';
+import skippi from '../../assets/partners/skippi.png';
+import headshot from '../../assets/partners/headshot.png';
+import cheeros from '../../assets/partners/cheeros.png';
+import tingly from '../../assets/partners/tingley.png';
 
 const partners = [
   { src: redbull, name: 'Red Bull' },
@@ -24,6 +29,11 @@ const partners = [
   { src: unstop, name: 'Unstop' },
   { src: dominos, name: 'Dominos' },
   { src: unibazar, name: 'Unibazar' },
+  { src: lahoriZeera, name: 'Lahori Zeera' },
+  { src: skippi, name: 'Skippi' },
+  { src: headshot, name: 'Headshot' },
+  { src: cheeros, name: "Cheero's" },
+  { src: tingly, name: 'Tingly' },
 ];
 
 export default partners;

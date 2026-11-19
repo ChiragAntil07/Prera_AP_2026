@@ -2,13 +2,15 @@
     min-height: 100vh;
 }
 
-.app-shell-home {
+.app-shell-home,
+.app-shell-about {
     position: relative;
     isolation: isolate;
     background: #080a0c;
 }
 
-.app-shell-home::before {
+.app-shell-home::before,
+.app-shell-about::before {
     position: absolute;
     z-index: -1;
     inset: 0;
@@ -239,8 +241,9 @@
 .home-partner-logo img {
     display: block;
     width: 100%;
-    max-height: 48px;
+    max-height: 54px;
     object-fit: contain;
+    transform: scale(1.1);
 }
 
 @keyframes home-partner-flow {
@@ -281,7 +284,8 @@
 }
 
 @media (max-width: 480px) {
-    .app-shell-home::before {
+    .app-shell-home::before,
+    .app-shell-about::before {
         background-attachment: scroll;
         background-position: center, 53% top;
     }
@@ -326,7 +330,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .app-shell-home::before {
+    .app-shell-home::before,
+    .app-shell-about::before {
         background-attachment: scroll;
     }
 

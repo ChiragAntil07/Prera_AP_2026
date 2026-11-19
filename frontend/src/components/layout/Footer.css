@@ -6,7 +6,8 @@
     color: var(--color-muted);
 }
 
-.app-shell-home .site-footer {
+.app-shell-home .site-footer,
+.app-shell-about .site-footer {
     background: transparent;
 }
 

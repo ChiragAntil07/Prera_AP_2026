@@ -115,11 +115,13 @@ a {
   background: #e9eef0;
 }
 
-:root[data-theme="light"] .app-shell-home {
+:root[data-theme="light"] .app-shell-home,
+:root[data-theme="light"] .app-shell-about {
   background: var(--color-bg);
 }
 
-:root[data-theme="light"] .app-shell-home::before {
+:root[data-theme="light"] .app-shell-home::before,
+:root[data-theme="light"] .app-shell-about::before {
   background-image:
     linear-gradient(
       180deg,
@@ -131,7 +133,8 @@ a {
     var(--home-background-image);
 }
 
-:root[data-theme="light"] .app-shell-home .site-footer {
+:root[data-theme="light"] .app-shell-home .site-footer,
+:root[data-theme="light"] .app-shell-about .site-footer {
   background: rgba(243, 245, 246, 0.28);
 }
 

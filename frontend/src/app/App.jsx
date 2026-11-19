@@ -14,7 +14,10 @@ import EventSubmission from '../Pages/EventSubmission.jsx';
 import eventBackground from '../assets/brand/bg_prera.png';
 
 function App() {
-  const isHome = useLocation().pathname === '/';
+  const pathname = useLocation().pathname;
+  const isHome = pathname === '/';
+  const isAbout = pathname === '/about';
+  const hasPageBackground = isHome || isAbout;
   const [theme, setTheme] = useState(() => (
     localStorage.getItem('prera-theme') === 'light' ? 'light' : 'dark'
   ));
@@ -26,8 +29,8 @@ function App() {
 
   return (
     <div
-      className={`app-shell${isHome ? ' app-shell-home' : ''}`}
-      style={isHome ? { '--home-background-image': `url(${eventBackground})` } : undefined}
+      className={`app-shell${isHome ? ' app-shell-home' : ''}${isAbout ? ' app-shell-about' : ''}`}
+      style={hasPageBackground ? { '--home-background-image': `url(${eventBackground})` } : undefined}
     >
       <Nav theme={theme} onToggleTheme={() => setTheme(current => (
         current === 'dark' ? 'light' : 'dark'
